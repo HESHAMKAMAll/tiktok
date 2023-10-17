@@ -6,6 +6,7 @@ import 'package:tiktok/views/screens/auth/auth_screen.dart';
 import 'package:tiktok/views/screens/main_screen.dart';
 import 'constants.dart';
 import 'controllers/auth_controller.dart';
+import 'controllers/upload_video_controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -21,9 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => AuthController(),
-        ),
+        ChangeNotifierProvider(create: (context) => AuthController()),
+        ChangeNotifierProvider(create: (context) => UploadVideoController()),
       ],
       builder: (context, child) => GetMaterialApp(
         title: 'Tiktok',
