@@ -4,9 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok/views/screens/main_pages/add_video.dart';
+import 'package:tiktok/views/screens/main_pages/home.dart';
 
 List pages = [
-  const Center(child: Text("One")),
+  Home(),
   const Center(child: Text("Two")),
   AddVideoScreen(videoFile: File(""),videoPath: ""),
   const Center(child: Text("Four")),

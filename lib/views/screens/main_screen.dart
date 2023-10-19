@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../widgets/custome_icon.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _MainScreenState extends State<MainScreen> {
   int _page = 0;
   // late PageController pageController;
   //

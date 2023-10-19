@@ -62,7 +62,7 @@ class UploadVideoController extends ChangeNotifier {
             video.toJson(),
           );
       isLoading = false;
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Home()), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
     } catch (e) {
       isLoading = false;
       Get.snackbar('An error occurred while uploading the video.', e.toString(), duration: Duration(minutes: 5));
@@ -131,7 +131,7 @@ class UploadVideoController extends ChangeNotifier {
             video.toJson(),
           );
       isLoading = false;
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Home()), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
     } catch (e) {
       isLoading = false;
       Get.snackbar('An error occurred while uploading the video.', e.toString(), duration: Duration(minutes: 5));
