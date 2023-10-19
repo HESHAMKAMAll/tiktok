@@ -8,7 +8,6 @@ import 'package:tiktok/constants.dart';
 import 'package:tiktok/controllers/upload_video_controller.dart';
 import 'package:video_player/video_player.dart';
 import '../../widgets/text_input_field.dart';
-import '../main_screen.dart';
 
 class AddVideoScreen extends StatefulWidget {
   File videoFile;
@@ -24,11 +23,13 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
   double seekValue = 0.5;
   Timer? progressTimer;
   bool setVolume = true;
+  bool? camera;
+  bool hideIconPlay = false;
   late VideoPlayerController controller;
   final TextEditingController _songController = TextEditingController();
   final TextEditingController _captionController = TextEditingController();
 
-  pickVideo(ImageSource src, BuildContext context) async {
+  pickVideo(ImageSource src, BuildContext context, bool) async {
     final video = await ImagePicker().pickVideo(source: src);
     if (video != null) {
       widget.videoFile = File(video.path);
@@ -40,7 +41,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
         controller = VideoPlayerController.file(widget.videoFile);
         controller.addListener(() {
           setState(() {}); // Trigger a rebuild when the position changes
-          if (controller!.value.isInitialized) {
+          if (controller.value.isInitialized) {
             startProgressTimer(); // Start the progress timer when video is initialized
           }
         });
@@ -52,6 +53,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
         controller.setLooping(true);
       }
     } else {}
+    camera = bool;
   }
 
   // AlertDialog
@@ -60,21 +62,21 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Select video', style: TextStyle(fontSize: 20)),
+            title: const Text('Select video', style: TextStyle(fontSize: 20)),
             content: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CupertinoButton(
-                    onPressed: () => pickVideo(ImageSource.gallery, context),
-                    child: Icon(
+                    onPressed: () => pickVideo(ImageSource.gallery, context, false),
+                    child: const Icon(
                       Icons.image_outlined,
                       color: Colors.white,
                       size: 45,
                     )),
-                SizedBox(width: 30),
+                const SizedBox(width: 30),
                 CupertinoButton(
-                    onPressed: () => pickVideo(ImageSource.camera, context),
-                    child: Icon(
+                    onPressed: () => pickVideo(ImageSource.camera, context, true),
+                    child: const Icon(
                       Icons.photo_camera_outlined,
                       color: Colors.white,
                       size: 45,
@@ -86,7 +88,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Cansel', style: TextStyle(color: Colors.white))),
+                  child: const Text('Cansel', style: TextStyle(color: Colors.white))),
             ],
           );
         });
@@ -99,7 +101,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
       // setState(() {});
       controller.addListener(() {
         setState(() {}); // Trigger a rebuild when the position changes
-        if (controller!.value.isInitialized) {
+        if (controller.value.isInitialized) {
           startProgressTimer(); // Start the progress timer when video is initialized
         }
       });
@@ -115,19 +117,19 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
 
   // Method to seek to a specific position in the video
   void seekToPosition(double value) {
-    if (controller != null && controller!.value.isInitialized) {
-      final newPosition = value * controller!.value.duration.inMilliseconds;
-      controller!.seekTo(Duration(milliseconds: newPosition.round()));
+    if (controller != null && controller.value.isInitialized) {
+      final newPosition = value * controller.value.duration.inMilliseconds;
+      controller.seekTo(Duration(milliseconds: newPosition.round()));
     }
   }
 
   // Method to start a timer for updating seekValue
   void startProgressTimer() {
     if (progressTimer == null) {
-      progressTimer = Timer.periodic(Duration(milliseconds: 200), (timer) {
-        if (controller != null && controller!.value.isInitialized) {
+      progressTimer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+        if (controller != null && controller.value.isInitialized) {
           setState(() {
-            seekValue = controller!.value.position.inMilliseconds / controller!.value.duration.inMilliseconds;
+            seekValue = controller.value.position.inMilliseconds / controller.value.duration.inMilliseconds;
           });
         }
       });
@@ -159,10 +161,27 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                   children: [
                     controller != null && controller.value.isInitialized
                         ? Stack(
+                            alignment: Alignment.center,
                             children: [
-                              AspectRatio(aspectRatio: controller.value.aspectRatio, child: VideoPlayer(controller)),
+                              GestureDetector(
+                                  onTap: () {
+                                    hideIconPlay = true;
+                                    if (controller.value.isPlaying) {
+                                      controller.pause();
+                                    } else {
+                                      controller.play();
+                                    }
+                                    setState(() {});
+                                    Future.delayed(const Duration(seconds: 1),() {
+                                      setState(() {
+                                        hideIconPlay = false;
+                                      });
+                                    },);
+                                  },
+                                  child: AspectRatio(aspectRatio: controller.value.aspectRatio, child: VideoPlayer(controller))),
                               Positioned(
                                   right: 0,
+                                  top: 0,
                                   child: CupertinoButton(
                                       onPressed: () {
                                         widget.videoPath = "";
@@ -171,7 +190,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                                         setState(() {});
                                       },
                                       padding: EdgeInsets.zero,
-                                      child: Icon(Icons.delete_forever_outlined, color: Colors.grey))),
+                                      child: const Icon(Icons.delete_forever_outlined, color: Colors.grey))),
                               Positioned(
                                   bottom: 0,
                                   right: 0,
@@ -188,9 +207,11 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                                       },
                                       padding: EdgeInsets.zero,
                                       child: Icon(setVolume ? Icons.volume_up : Icons.volume_off, color: Colors.grey))),
+                             if(hideIconPlay)
+                              Center(child: Icon(controller.value.isPlaying ? Icons.pause_circle : Icons.play_circle, color: Colors.grey,size: 50)),
                             ],
                           )
-                        : CircularProgressIndicator(),
+                        : const CircularProgressIndicator(),
                     Slider(
                       value: seekValue,
                       min: 0.0,
@@ -211,81 +232,120 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                     //   valueColor: AlwaysStoppedAnimation<Color>(buttonColor!), // Customize the color
                     //   backgroundColor: Colors.grey, // Customize the background color
                     // ),
-                    SizedBox(height: 30),
                     SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
                             width: MediaQuery.of(context).size.width - 20,
                             child: TextInputField(
                               controller: _songController,
-                              labelText: "Song Name",
+                              hintText: "Song Name",
                               prefixIcon: Icons.music_note_outlined,
                               keyboardType: TextInputType.text,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
                             width: MediaQuery.of(context).size.width - 20,
                             child: TextInputField(
                               controller: _captionController,
-                              labelText: "Caption",
+                              hintText: "Caption",
                               prefixIcon: Icons.closed_caption_outlined,
                               keyboardType: TextInputType.text,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Consumer<UploadVideoController>(
                             builder: (context, value, child) {
                               if (context.read<UploadVideoController>().isLoading) {
                                 return ElevatedButton(
-                                    onPressed: () {}, child: Text("Loading...", style: TextStyle(fontSize: 17, color: Colors.white)));
+                                    onPressed: () {}, child: const Text("Loading...", style: TextStyle(fontSize: 17, color: Colors.white)));
                               }
-                              return ElevatedButton(
+                              return CupertinoButton(
                                   onPressed: () async {
-                                    controller.setLooping(false);
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Dialog(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                SizedBox(
-                                                  height: 60,
-                                                  width: 30,
-                                                  child: Center(
-                                                    child: CircularProgressIndicator(color: buttonColor),
+                                    if (!camera!) {
+                                      // For gallery no compressing
+                                      controller.setLooping(false);
+                                      showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (context) {
+                                            return Dialog(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 60,
+                                                    width: 30,
+                                                    child: Center(
+                                                      child: CircularProgressIndicator(color: buttonColor),
+                                                    ),
                                                   ),
-                                                ),
-                                                Text("Posting your video"),
-                                                SizedBox(height: 20),
-                                              ],
-                                            ),
-                                          );
-                                        });
-                                    await value.uploadVideo(
-                                      _songController.text,
-                                      _captionController.text,
-                                      widget.videoPath,
-                                      context,
-                                    );
+                                                  const Text("Posting your video"),
+                                                  const SizedBox(height: 20),
+                                                ],
+                                              ),
+                                            );
+                                          });
+                                      await value.uploadVideo(
+                                        _songController.text,
+                                        _captionController.text,
+                                        widget.videoPath,
+                                        context,
+                                      );
 
-                                    widget.videoPath = "";
-                                    widget.videoFile = File("");
-                                    controller.dispose();
+                                      widget.videoPath = "";
+                                      widget.videoFile = File("");
+                                      controller.dispose();
+                                    } else {
+                                      // For Camera to compressing
+                                      controller.setLooping(false);
+                                      showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (context) {
+                                            return Dialog(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 60,
+                                                    width: 30,
+                                                    child: Center(
+                                                      child: CircularProgressIndicator(color: buttonColor),
+                                                    ),
+                                                  ),
+                                                  const Text("Posting your video"),
+                                                  const SizedBox(height: 20),
+                                                ],
+                                              ),
+                                            );
+                                          });
+                                      await value.uploadVideoForCamera(
+                                        _songController.text,
+                                        _captionController.text,
+                                        widget.videoPath,
+                                        context,
+                                      );
+
+                                      widget.videoPath = "";
+                                      widget.videoFile = File("");
+                                      controller.dispose();
+                                    }
                                   },
-                                  child: Text("Share!", style: TextStyle(fontSize: 20, color: Colors.white)));
+                                  color: buttonColor,
+                                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                                  child: const Text("Share!", style: TextStyle(fontSize: 25, color: Colors.white)));
                             },
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 35),
+                    const SizedBox(height: 62),
                   ],
                 ),
               ),
@@ -294,7 +354,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
               child: CupertinoButton(
                 onPressed: () => showOptionDialog(context),
                 color: buttonColor,
-                child: Text("Add Video", style: TextStyle(color: Colors.white)),
+                child: const Text("Add Video", style: TextStyle(color: Colors.white)),
               ),
             ),
     );

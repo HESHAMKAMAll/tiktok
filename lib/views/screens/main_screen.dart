@@ -53,48 +53,51 @@ class _HomeState extends State<Home> {
             left: 0,
             right: 0,
             child: Container(
-              decoration: BoxDecoration(
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Column(
                 children: [
-                  CupertinoButton(
-                    onPressed: () {
-                      onPageChanged(0);
-                    },
-                    padding: EdgeInsets.zero,
-                    child: Icon(Icons.home,color: _page == 0 ? buttonColor : Colors.grey),
-                    // color: _page == 0 ? buttonColor : Colors.grey,
-                  ),
-                  CupertinoButton(
-                    onPressed: () {
-                      onPageChanged(1);
-                    },
-                    padding: EdgeInsets.zero,
-                    child: Icon(Icons.search,color: _page == 1 ? buttonColor : Colors.grey),
-                    // color: _page == 1 ? buttonColor : Colors.grey,
-                  ),
-                  CupertinoButton(
-                    onPressed: () {
-                      onPageChanged(2);
-                      // showOptionDialog(context);
-                    },
-                    padding: EdgeInsets.zero,
-                    child: CustomIcon(),
-                  ),
-                  CupertinoButton(
-                    onPressed: () {
-                      onPageChanged(3);
-                    },
-                    padding: EdgeInsets.zero,
-                    child: Icon(Icons.message_outlined,color: _page == 3 ? buttonColor : Colors.grey),
-                  ),
-                  CupertinoButton(
-                    onPressed: () {
-                      onPageChanged(4);
-                    },
-                    padding: EdgeInsets.zero,
-                    child: Icon(Icons.person_outline,color: _page == 4 ? buttonColor : Colors.grey),
+                  const Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CupertinoButton(
+                        onPressed: () {
+                          onPageChanged(0);
+                        },
+                        padding: EdgeInsets.zero,
+                        child: Icon(Icons.home,color: _page == 0 ? buttonColor : Colors.grey),
+                        // color: _page == 0 ? buttonColor : Colors.grey,
+                      ),
+                      CupertinoButton(
+                        onPressed: () {
+                          onPageChanged(1);
+                        },
+                        padding: EdgeInsets.zero,
+                        child: Icon(Icons.search,color: _page == 1 ? buttonColor : Colors.grey),
+                        // color: _page == 1 ? buttonColor : Colors.grey,
+                      ),
+                      CupertinoButton(
+                        onPressed: () {
+                          onPageChanged(2);
+                          // showOptionDialog(context);
+                        },
+                        padding: EdgeInsets.zero,
+                        child: const CustomIcon(),
+                      ),
+                      CupertinoButton(
+                        onPressed: () {
+                          onPageChanged(3);
+                        },
+                        padding: EdgeInsets.zero,
+                        child: Icon(Icons.message_outlined,color: _page == 3 ? buttonColor : Colors.grey),
+                      ),
+                      CupertinoButton(
+                        onPressed: () {
+                          onPageChanged(4);
+                        },
+                        padding: EdgeInsets.zero,
+                        child: Icon(Icons.person_outline,color: _page == 4 ? buttonColor : Colors.grey),
+                      ),
+                    ],
                   ),
                 ],
               ),

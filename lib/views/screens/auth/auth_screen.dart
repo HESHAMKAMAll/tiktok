@@ -37,15 +37,15 @@ class _AuthState extends State<Auth> {
               Text(check ? "Log in to TikTok" : "Sign up for TikTok",
                   style: TextStyle(fontSize: 35, fontWeight: FontWeight.w900, color: buttonColor)),
               // Text(check?"Login":"Sign Up", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900)),
-              SizedBox(height: 25),
-              if (check) SizedBox(height: 72),
+              const SizedBox(height: 25),
+              if (check) const SizedBox(height: 72),
               if (!check)
                 Stack(
                   children: [
                     _image == null
                         ? CircleAvatar(
                             radius: 64,
-                            backgroundImage: AssetImage('assets/images/man.png'),
+                            backgroundImage: const AssetImage('assets/images/man.png'),
                             backgroundColor: buttonColor,
                           )
                         : CircleAvatar(
@@ -72,39 +72,39 @@ class _AuthState extends State<Auth> {
                     ),
                   ],
                 ),
-              if (!check) SizedBox(height: 15),
+              if (!check) const SizedBox(height: 15),
               if (!check)
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextInputField(
                     controller: _usernameController,
-                    labelText: "User Name",
+                    hintText: "User Name",
                     prefixIcon: Icons.person_outline,
                     keyboardType: TextInputType.text,
                   ),
                 ),
-              if (!check) SizedBox(height: 15),
+              if (!check) const SizedBox(height: 15),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextInputField(
                   controller: _emailController,
-                  labelText: "Email",
+                  hintText: "Email",
                   prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextInputField(
                   controller: _passwordController,
-                  labelText: "Password",
+                  hintText: "Password",
                   prefixIcon: Icons.lock_outline_rounded,
                   keyboardType: TextInputType.text,
                   isObscure: true,
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 40,
                 child: Consumer<AuthController>(
@@ -115,7 +115,7 @@ class _AuthState extends State<Auth> {
                         child: CupertinoButton(
                           onPressed: () {},
                           color: buttonColor,
-                          child: Text("Loading...", style: TextStyle(color: Colors.white, fontSize: 20)),
+                          child: const Text("Loading...", style: TextStyle(color: Colors.white, fontSize: 20)),
                         ),
                       );
                     }
@@ -131,7 +131,7 @@ class _AuthState extends State<Auth> {
                         }
                       },
                       color: buttonColor,
-                      child: Text(check ? "Sign In" : "Sign Up", style: TextStyle(color: Colors.white, fontSize: 20)),
+                      child: Text(check ? "Sign In" : "Sign Up", style: const TextStyle(color: Colors.white, fontSize: 20)),
                     );
                   },
                 ),
@@ -143,7 +143,7 @@ class _AuthState extends State<Auth> {
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(width: 100, child: Divider()),
@@ -151,7 +151,7 @@ class _AuthState extends State<Auth> {
               SizedBox(width: 100, child: Divider()),
             ],
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -169,7 +169,7 @@ class _AuthState extends State<Auth> {
                   child: Image.asset("assets/images/google.png", height: 40),
                 ),
               ),
-              SizedBox(width: 90),
+              const SizedBox(width: 90),
               CupertinoButton(
                 onPressed: () async {
                   // try {
@@ -182,15 +182,15 @@ class _AuthState extends State<Auth> {
                 },
                 padding: EdgeInsets.zero,
                 // color: Colors.blue,
-                child: Icon(Icons.facebook, color: Colors.blue, size: 42),
+                child: const Icon(Icons.facebook, color: Colors.blue, size: 42),
               ),
             ],
           ),
-          SizedBox(height: 70),
+          const SizedBox(height: 70),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(check ? "Don't have an account? " : "Do have an account? ", style: TextStyle(fontSize: 16)),
+              Text(check ? "Don't have an account? " : "Do have an account? ", style: const TextStyle(fontSize: 16)),
               CupertinoButton(
                 onPressed: () {
                   setState(() {

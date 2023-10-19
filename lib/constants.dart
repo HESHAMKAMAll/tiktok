@@ -2,18 +2,15 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tiktok/views/screens/main_pages/add_video.dart';
-import 'package:tiktok/views/screens/main_pages/confirm_screen.dart';
 
 List pages = [
-  Center(child: Text("One")),
-  Center(child: Text("Two")),
+  const Center(child: Text("One")),
+  const Center(child: Text("Two")),
   AddVideoScreen(videoFile: File(""),videoPath: ""),
-  Center(child: Text("Four")),
-  Center(child: Text("Five")),
+  const Center(child: Text("Four")),
+  const Center(child: Text("Five")),
 ];
 
 // COLORS
