@@ -11,7 +11,7 @@ List pages = [
   const Center(child: Text("Two")),
   AddVideoScreen(videoFile: File(""),videoPath: ""),
   const Center(child: Text("Four")),
-  const Center(child: Text("Five")),
+   Center(child: ElevatedButton(onPressed: ()async{await FirebaseAuth.instance.signOut();}, child: Text("Sign Out"))),
 ];
 
 // COLORS

@@ -20,6 +20,26 @@ class VideoController extends GetxController {
     }));
   }
 
+
+  Future<void> likePost(String postId, String uid, List likes) async {
+    try {
+      if (likes.contains(uid)) {
+        await firestore.collection("videos").doc(postId).update({
+          "likes": FieldValue.arrayRemove([uid]),
+        });
+      } else {
+        await firestore.collection("videos").doc(postId).update({
+          "likes": FieldValue.arrayUnion([uid]),
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+
+
+//
 // likeVideo(String id) async {
 //   DocumentSnapshot doc = await firestore.collection('videos').doc(id).get();
 //   var uid = authController.user.uid;

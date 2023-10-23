@@ -19,7 +19,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
       ..initialize().then((value) {
         videoPlayerController.play();
         videoPlayerController.setVolume(1);
-        videoPlayerController.setLooping(true);
+        videoPlayerController.setLooping(false);
         setState(() {});
       });
     super.initState();
@@ -30,15 +30,31 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     videoPlayerController.dispose();
     super.dispose();
   }
-
+  bool hideIconPlay = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      height: size.height,
-      decoration: BoxDecoration(color: Colors.black),
-      child: VideoPlayer(videoPlayerController),
+    return GestureDetector(
+      onTap: () {
+        hideIconPlay = true;
+        if (videoPlayerController.value.isPlaying) {
+          videoPlayerController.pause();
+        } else {
+          videoPlayerController.play();
+        }
+        setState(() {});
+        Future.delayed(const Duration(seconds: 1),() {
+          setState(() {
+            hideIconPlay = false;
+          });
+        },);
+      },
+      child: Container(
+        width: size.width,
+        height: size.height,
+        decoration: BoxDecoration(color: Colors.black),
+        child: VideoPlayer(videoPlayerController),
+      ),
     );
   }
 }
