@@ -15,158 +15,158 @@ class Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // CommentController().updatePostId(id);
     final size = MediaQuery.of(context).size;
+    print(size.width);
     return Consumer<CommentController>(
       builder: (context, value, child) => Scaffold(
-        body: SingleChildScrollView(
-          child: SizedBox(
-            width: size.width,
-            height: size.height,
-            child: Column(
-              children: [
-                Expanded(
-                  child: StreamBuilder(
-                    stream: firestore.collection("videos").doc(id).collection("comments").snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator(color: Colors.red));
-                      }
-                      return ListView.builder(
-                        padding: EdgeInsets.only(right: 8, left: 8, top: 27),
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, i) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Row(
+        body: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                stream: firestore.collection("videos").doc(id).collection("comments").snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator(color: Colors.red));
+                  }
+                  return ListView.builder(
+                    padding: EdgeInsets.only(left: 8, top: 27),
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, i) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black,
+                                backgroundImage: NetworkImage(snapshot.data!.docs[i]["profilePhoto"]),
+                              ),
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5),
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.black,
-                                    backgroundImage: NetworkImage(snapshot.data!.docs[i]["profilePhoto"]),
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Stack(
                                   children: [
-                                    Stack(
-                                      children: [
-                                        Card(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.only(top: 8, bottom: 8, left: 8, right: MediaQuery.of(context).size.width / 5.3),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  snapshot.data!.docs[i]["username"],
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.red,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 220,
-                                                  child: Text(
-                                                    snapshot.data!.docs[i]["comment"],
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                    Card(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          top: 8,
+                                          bottom: 8,
+                                          left: 8,
+                                          right: 10,
+                                          // right: size.width <= 350? size.width-320:size.width <= 360?size.width-330:size.width <= 412?size.width-382:size.width-820,
+                                          // right: size.width-330,
                                         ),
-                                        Positioned(
-                                          bottom: 0,
-                                          right: 0,
-                                          child: CupertinoButton(
-                                            onPressed: () {
-                                              value.likeComment(snapshot.data!.docs[i]["id"], id);
-                                            },
-                                            padding: EdgeInsets.zero,
-                                            child: Icon(
-                                              Icons.favorite,
-                                              size: 25,
-                                              color: (snapshot.data!.docs[i]["likes"]).contains(FirebaseAuth.instance.currentUser!.uid)
-                                                  ? Colors.red
-                                                  : Colors.white,
+                                        child: Column( // here
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              snapshot.data!.docs[i]["username"],
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      ],
+                                            SizedBox(
+                                              width: size.width-75,
+                                              child: Text(
+                                                snapshot.data!.docs[i]["comment"],
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SizedBox(width: 10),
-                                        Text(
-                                          tago.format(snapshot.data!.docs[i]["datePublished"].toDate()),
-                                          style: TextStyle(fontSize: 12, color: Colors.white),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: CupertinoButton(
+                                        onPressed: () {
+                                          value.likeComment(snapshot.data!.docs[i]["id"], id);
+                                        },
+                                        padding: EdgeInsets.zero,
+                                        child: Icon(
+                                          Icons.favorite,
+                                          size: 25,
+                                          color: (snapshot.data!.docs[i]["likes"]).contains(FirebaseAuth.instance.currentUser!.uid)
+                                              ? Colors.red
+                                              : Colors.white.withOpacity(0.2),
                                         ),
-                                        SizedBox(width: 10),
-                                        Text(
-                                          "${snapshot.data!.docs[i]["likes"].length} likes",
-                                          style: TextStyle(fontSize: 12, color: Colors.white),
-                                        ),
-                                      ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(width: 10),
+                                    Text(
+                                      tago.format(snapshot.data!.docs[i]["datePublished"].toDate()),
+                                      style: TextStyle(fontSize: 12, color: Colors.white),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      "${snapshot.data!.docs[i]["likes"].length} likes",
+                                      style: TextStyle(fontSize: 12, color: Colors.white),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                          );
-                        },
+                          ],
+                        ),
                       );
                     },
-                  ),
-                ),
-                Divider(),
-                ListTile(
-                  leading: FutureBuilder(
-                    future: firestore.collection("users").doc(firebaseAuth.currentUser!.uid).get(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircleAvatar(
-                          backgroundColor: Colors.red,
-                        );
-                      }
-                      return CircleAvatar(backgroundImage: NetworkImage(snapshot.data!["profilePhoto"]));
-                    },
-                  ),
-                  title: TextFormField(
-                    controller: _commentController,
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                    decoration: InputDecoration(
-                      suffixIcon: CupertinoButton(
-                        onPressed: () async {
-                          if (_commentController.text.isNotEmpty) {
-                            await value.postComment(_commentController.text, id);
-                            _commentController.clear();
-                            FocusManager.instance.primaryFocus!.unfocus();
-                          }
-                        },
-                        padding: EdgeInsets.zero,
-                        child: Icon(Icons.send_sharp, color: Colors.red),
-                      ),
-                      hintText: "Comment",
-                      filled: true,
-                      isDense: true,
-                      enabledBorder: UnderlineInputBorder(borderRadius: BorderRadius.circular(50)),
-                      focusedBorder: UnderlineInputBorder(borderRadius: BorderRadius.circular(50)),
-                    ),
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-          ),
+            Divider(),
+            ListTile(
+              leading: FutureBuilder(
+                future: firestore.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircleAvatar(
+                      backgroundColor: Colors.red,
+                    );
+                  }
+                  return CircleAvatar(backgroundImage: NetworkImage(snapshot.data!["profilePhoto"]));
+                },
+              ),
+              title: TextFormField(
+                controller: _commentController,
+                style: TextStyle(fontSize: 16, color: Colors.white),
+                decoration: InputDecoration(
+                  suffixIcon: CupertinoButton(
+                    onPressed: () async {
+                      if (_commentController.text.isNotEmpty) {
+                        await value.postComment(_commentController.text, id);
+                        _commentController.clear();
+                        FocusManager.instance.primaryFocus!.unfocus();
+                      }
+                    },
+                    padding: EdgeInsets.zero,
+                    child: Icon(Icons.send_sharp, color: Colors.red),
+                  ),
+                  hintText: "Comment",
+                  filled: true,
+                  isDense: true,
+                  enabledBorder: UnderlineInputBorder(borderRadius: BorderRadius.circular(50)),
+                  focusedBorder: UnderlineInputBorder(borderRadius: BorderRadius.circular(50)),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

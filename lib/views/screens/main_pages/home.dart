@@ -97,10 +97,9 @@ class _HomeState extends State<Home> {
             final data = videoController.videoList[index];
             return Stack(
               children: [
-                // VideoPlayerItem(videoUrl: data.videoUrl),
+                VideoPlayerItem(videoUrl: data.videoUrl),
                 Column(
                   children: [
-                    // SizedBox(height: 50),
                     Expanded(
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
