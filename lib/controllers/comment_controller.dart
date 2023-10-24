@@ -44,7 +44,7 @@ class CommentController extends ChangeNotifier {
       Get.snackbar(
         'Error While Commenting',
         e.toString(),
-        duration: Duration(seconds: 50)
+        duration: const Duration(seconds: 50)
       );
     }
   }

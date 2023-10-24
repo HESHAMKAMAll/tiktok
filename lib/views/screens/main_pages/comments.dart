@@ -26,10 +26,10 @@ class Comments extends StatelessWidget {
                 stream: firestore.collection("videos").doc(id).collection("comments").snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator(color: Colors.red));
+                    return const Center(child: CircularProgressIndicator(color: Colors.red));
                   }
                   return ListView.builder(
-                    padding: EdgeInsets.only(left: 8, top: 27),
+                    padding: const EdgeInsets.only(left: 8, top: 27),
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, i) {
                       return Padding(
@@ -51,7 +51,7 @@ class Comments extends StatelessWidget {
                                   children: [
                                     Card(
                                       child: Padding(
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                           top: 8,
                                           bottom: 8,
                                           left: 8,
@@ -64,7 +64,7 @@ class Comments extends StatelessWidget {
                                           children: [
                                             Text(
                                               snapshot.data!.docs[i]["username"],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.red,
                                                 fontWeight: FontWeight.bold,
@@ -74,7 +74,7 @@ class Comments extends StatelessWidget {
                                               width: size.width-75,
                                               child: Text(
                                                 snapshot.data!.docs[i]["comment"],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w500,
@@ -108,15 +108,15 @@ class Comments extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Text(
                                       tago.format(snapshot.data!.docs[i]["datePublished"].toDate()),
-                                      style: TextStyle(fontSize: 12, color: Colors.white),
+                                      style: const TextStyle(fontSize: 12, color: Colors.white),
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Text(
                                       "${snapshot.data!.docs[i]["likes"].length} likes",
-                                      style: TextStyle(fontSize: 12, color: Colors.white),
+                                      style: const TextStyle(fontSize: 12, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -130,13 +130,13 @@ class Comments extends StatelessWidget {
                 },
               ),
             ),
-            Divider(),
+            const Divider(),
             ListTile(
               leading: FutureBuilder(
                 future: firestore.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircleAvatar(
+                    return const CircleAvatar(
                       backgroundColor: Colors.red,
                     );
                   }
@@ -145,7 +145,7 @@ class Comments extends StatelessWidget {
               ),
               title: TextFormField(
                 controller: _commentController,
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: const TextStyle(fontSize: 16, color: Colors.white),
                 decoration: InputDecoration(
                   suffixIcon: CupertinoButton(
                     onPressed: () async {
@@ -156,7 +156,7 @@ class Comments extends StatelessWidget {
                       }
                     },
                     padding: EdgeInsets.zero,
-                    child: Icon(Icons.send_sharp, color: Colors.red),
+                    child: const Icon(Icons.send_sharp, color: Colors.red),
                   ),
                   hintText: "Comment",
                   filled: true,

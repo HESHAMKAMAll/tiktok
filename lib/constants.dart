@@ -5,13 +5,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok/views/screens/main_pages/add_video.dart';
 import 'package:tiktok/views/screens/main_pages/home.dart';
+import 'package:tiktok/views/screens/main_pages/profile.dart';
+import 'package:tiktok/views/screens/main_pages/search.dart';
 
 List pages = [
   Home(),
-  const Center(child: Text("Two")),
-  AddVideoScreen(videoFile: File(""),videoPath: ""),
+  Search(),
+  AddVideoScreen(videoFile: File(""), videoPath: ""),
   const Center(child: Text("Four")),
-   Center(child: ElevatedButton(onPressed: ()async{await FirebaseAuth.instance.signOut();}, child: Text("Sign Out"))),
+  Profile(),
 ];
 
 // COLORS

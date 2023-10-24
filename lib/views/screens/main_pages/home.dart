@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
             child: Container(
               width: 50,
               height: 50,
-              padding: EdgeInsets.all(1),
+              padding: const EdgeInsets.all(1),
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(25)),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(25),
@@ -57,12 +57,12 @@ class _HomeState extends State<Home> {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(11),
+            padding: const EdgeInsets.all(11),
             height: 50,
             width: 50,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: [
                   Colors.grey,
                   Colors.white,
@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
             final data = videoController.videoList[index];
             return Stack(
               children: [
-                VideoPlayerItem(videoUrl: data.videoUrl),
+                // VideoPlayerItem(videoUrl: data.videoUrl),
                 Column(
                   children: [
                     Expanded(
@@ -107,18 +107,18 @@ class _HomeState extends State<Home> {
                         children: [
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.only(left: 20),
+                              padding: const EdgeInsets.only(left: 20),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(data.username, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
-                                  Text(data.caption, style: TextStyle(fontSize: 15, color: Colors.white)),
+                                  Text(data.username, style: const TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+                                  Text(data.caption, style: const TextStyle(fontSize: 15, color: Colors.white)),
                                   Row(
                                     children: [
-                                      Icon(Icons.music_note, color: Colors.white, size: 15),
-                                      Text(data.songName, style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold)),
+                                      const Icon(Icons.music_note, color: Colors.white, size: 15),
+                                      Text(data.songName, style: const TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold)),
                                     ],
                                   ),
                                 ],
@@ -150,7 +150,7 @@ class _HomeState extends State<Home> {
                                     ),
                                     Text(
                                       data.likes.length.toString(),
-                                      style: TextStyle(fontSize: 16, color: Colors.white),
+                                      style: const TextStyle(fontSize: 16, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -158,11 +158,11 @@ class _HomeState extends State<Home> {
                                   children: [
                                     CupertinoButton(
                                       onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Comments(id: data.id))),
-                                      child: Icon(Icons.comment, size: 35, color: Colors.white),
+                                      child: const Icon(Icons.comment, size: 35, color: Colors.white),
                                     ),
                                     Text(
                                       data.commentCount.toString(),
-                                      style: TextStyle(fontSize: 16, color: Colors.white),
+                                      style: const TextStyle(fontSize: 16, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -170,11 +170,11 @@ class _HomeState extends State<Home> {
                                   children: [
                                     CupertinoButton(
                                       onPressed: () {},
-                                      child: Icon(Icons.reply, size: 35, color: Colors.white),
+                                      child: const Icon(Icons.reply, size: 35, color: Colors.white),
                                     ),
                                     Text(
                                       data.shareCount.toString(),
-                                      style: TextStyle(fontSize: 16, color: Colors.white),
+                                      style: const TextStyle(fontSize: 16, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -185,7 +185,7 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 60),
+                    const SizedBox(height: 60),
                   ],
                 ),
               ],

@@ -12,28 +12,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _page = 0;
-  // late PageController pageController;
-  //
-  // @override
-  // void initState() {
-  //   pageController = PageController();
-  //   super.initState();
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   pageController.dispose();
-  //   super.dispose();
-  // }
-
-  // void navigationTapped(int page) {
-  //   // pageController.jumpToPage(page);
-  //   pageController.animateToPage(
-  //     page,
-  //     duration: Duration(milliseconds: 300),
-  //     curve: Curves.linear,
-  //   );
-  // }
 
   void onPageChanged(int page) {
     setState(() {
@@ -43,7 +21,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // context.read<UploadVideoController>().isLoading.stream.listen((event) {});
     return Scaffold(
       body: Stack(
         children: [

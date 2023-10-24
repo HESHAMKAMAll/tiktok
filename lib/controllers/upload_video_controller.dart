@@ -62,10 +62,10 @@ class UploadVideoController extends ChangeNotifier {
             video.toJson(),
           );
       isLoading = false;
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const MainScreen()), (route) => false);
     } catch (e) {
       isLoading = false;
-      Get.snackbar('An error occurred while uploading the video.', e.toString(), duration: Duration(minutes: 5));
+      Get.snackbar('An error occurred while uploading the video.', e.toString(), duration: const Duration(minutes: 5));
     }
     notifyListeners();
   }
@@ -131,10 +131,10 @@ class UploadVideoController extends ChangeNotifier {
             video.toJson(),
           );
       isLoading = false;
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const MainScreen()), (route) => false);
     } catch (e) {
       isLoading = false;
-      Get.snackbar('An error occurred while uploading the video.', e.toString(), duration: Duration(minutes: 5));
+      Get.snackbar('An error occurred while uploading the video.', e.toString(), duration: const Duration(minutes: 5));
     }
     notifyListeners();
   }
