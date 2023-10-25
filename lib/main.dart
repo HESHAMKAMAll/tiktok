@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:tiktok/views/screens/main_screen.dart';
 import 'constants.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/comment_controller.dart';
+import 'controllers/profile_controller.dart';
 import 'controllers/upload_video_controller.dart';
 import 'firebase_options.dart';
 
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthController()),
         ChangeNotifierProvider(create: (context) => UploadVideoController()),
         ChangeNotifierProvider(create: (context) => CommentController()),
+        ChangeNotifierProvider(create: (context) => ProfileController()),
       ],
       builder: (context, child) => GetMaterialApp(
         title: 'Tiktok',
@@ -34,7 +37,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: backgroundColor,
         ),
         home: StreamBuilder(
-          stream: firebaseAuth.authStateChanges(),
+          stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {

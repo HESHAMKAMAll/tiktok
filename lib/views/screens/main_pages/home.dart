@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -97,7 +98,7 @@ class _HomeState extends State<Home> {
             final data = videoController.videoList[index];
             return Stack(
               children: [
-                // VideoPlayerItem(videoUrl: data.videoUrl),
+                VideoPlayerItem(videoUrl: data.videoUrl),
                 Column(
                   children: [
                     Expanded(
@@ -138,14 +139,17 @@ class _HomeState extends State<Home> {
                                       onPressed: () async {
                                         await VideoController().likePost(
                                           data.id,
-                                          firebaseAuth.currentUser!.uid,
+                                          FirebaseAuth.instance.currentUser!.uid,
                                           data.likes,
+                                        );
+                                        await VideoController().likeUser(
+                                          data.uid,
                                         );
                                       },
                                       child: Icon(
                                         Icons.favorite,
                                         size: 35,
-                                        color: data.likes.contains(firebaseAuth.currentUser!.uid) ? Colors.red : Colors.white,
+                                        color: data.likes.contains(FirebaseAuth.instance.currentUser!.uid) ? Colors.red : Colors.white,
                                       ),
                                     ),
                                     Text(

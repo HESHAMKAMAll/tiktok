@@ -12,8 +12,17 @@ List pages = [
   Home(),
   Search(),
   AddVideoScreen(videoFile: File(""), videoPath: ""),
-  const Center(child: Text("Four")),
-  Profile(),
+  Center(child: ElevatedButton(onPressed: ()async{await FirebaseAuth.instance.signOut();}, child: Text("Sign Out"))),
+  Profile(data: 1),
+  // StreamBuilder(
+  //   stream: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+  //   builder: (context, snapshot) {
+  //     if(snapshot.connectionState==ConnectionState.waiting){
+  //       return Center(child: CircularProgressIndicator(color: buttonColor,));
+  //     }
+  //     return Profile(data: snapshot.data);
+  //   },
+  // ),
 ];
 
 // COLORS
@@ -22,6 +31,6 @@ var buttonColor = Colors.red[400];
 const borderColor = Colors.grey;
 
 // FIREBASE
-var firebaseAuth = FirebaseAuth.instance;
+// var firebaseAuth = FirebaseAuth.instance;
 var firebaseStorage = FirebaseStorage.instance;
 var firestore = FirebaseFirestore.instance;

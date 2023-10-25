@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,7 +37,7 @@ class UploadVideoController extends ChangeNotifier {
   uploadVideo(String songName, String caption, String videoPath, BuildContext context) async {
     try {
       isLoading = true;
-      String uid = firebaseAuth.currentUser!.uid;
+      String uid = FirebaseAuth.instance.currentUser!.uid;
       DocumentSnapshot userDoc = await firestore.collection('users').doc(uid).get();
       // get id
       var allDocs = await firestore.collection('videos').get();
@@ -105,7 +106,7 @@ class UploadVideoController extends ChangeNotifier {
   uploadVideoForCamera(String songName, String caption, String videoPath, BuildContext context) async {
     try {
       isLoading = true;
-      String uid = firebaseAuth.currentUser!.uid;
+      String uid = FirebaseAuth.instance.currentUser!.uid;
       DocumentSnapshot userDoc = await firestore.collection('users').doc(uid).get();
       // get id
       var allDocs = await firestore.collection('videos').get();

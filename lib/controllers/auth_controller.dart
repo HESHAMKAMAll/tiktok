@@ -23,7 +23,7 @@ class AuthController extends ChangeNotifier {
 
   // upload to storage
   Future<String> _uploadToStorage(Uint8List image) async {
-    Reference reference = await firebaseStorage.ref().child("profilePics").child(firebaseAuth.currentUser!.uid);
+    Reference reference = await firebaseStorage.ref().child("profilePics").child(FirebaseAuth.instance.currentUser!.uid);
     UploadTask uploadTask = reference.putData(image);
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
@@ -35,9 +35,17 @@ class AuthController extends ChangeNotifier {
     try {
       isLoading = true;
       if (username.isNotEmpty && email.isNotEmpty && password.isNotEmpty && image != null) {
-        UserCredential credential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+        UserCredential credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
         String downloadUrl = await _uploadToStorage(image);
-        model.User user = model.User(name: username, profilePhoto: downloadUrl, email: email, uid: credential.user!.uid);
+        model.User user = model.User(
+          name: username,
+          profilePhoto: downloadUrl,
+          email: email,
+          uid: credential.user!.uid,
+          followers: [],
+          following: [],
+          likes: [],
+        );
         await firestore.collection("users").doc(credential.user!.uid).set(user.toJson());
         // Get.snackbar('Creating Account', 'Creating Account Success');
         isLoading = false;
@@ -57,7 +65,7 @@ class AuthController extends ChangeNotifier {
     try {
       isLoading = true;
       if (email.isNotEmpty && password.isNotEmpty) {
-        await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+        await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
         // Get.snackbar('Sign In', 'Sign In Success');
         isLoading = false;
       } else {
@@ -90,6 +98,9 @@ class AuthController extends ChangeNotifier {
       "profilePhoto": cred.user!.photoURL,
       "email": cred.user!.email,
       "uid": cred.user!.uid,
+      "followers": [],
+      "following": [],
+      "likes": [],
     });
 
     // Once signed in, return the UserCredential

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import '../constants.dart';
 import '../models/video.dart';
@@ -30,6 +31,23 @@ class VideoController extends GetxController {
       } else {
         await firestore.collection("videos").doc(postId).update({
           "likes": FieldValue.arrayUnion([uid]),
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> likeUser(String uid) async {
+    var data = await firestore.collection("users").doc(uid).get();
+    try {
+      if (data["likes"].contains(FirebaseAuth.instance.currentUser!.uid)) {
+        await firestore.collection("users").doc(uid).update({
+          "likes": FieldValue.arrayRemove([FirebaseAuth.instance.currentUser!.uid]),
+        });
+      } else {
+        await firestore.collection("users").doc(uid).update({
+          "likes": FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.uid]),
         });
       }
     } catch (e) {
