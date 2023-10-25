@@ -8,19 +8,22 @@ import '../../../controllers/comment_controller.dart';
 
 class Comments extends StatelessWidget {
   final String id;
-
-  Comments({super.key, required this.id});
-
+  final String commentCount;
+  Comments({super.key, required this.id, required this.commentCount});
   final TextEditingController _commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    print(size.width);
     return Consumer<CommentController>(
       builder: (context, value, child) => Scaffold(
+        backgroundColor: Colors.black38,
         body: Column(
           children: [
+            SizedBox(height: 14),
+            Text("Comments  $commentCount",style: TextStyle(fontWeight: FontWeight.bold)),
+            SizedBox(height: 5),
+            Divider(),
             Expanded(
               child: StreamBuilder(
                 stream: firestore.collection("videos").doc(id).collection("comments").snapshots(),

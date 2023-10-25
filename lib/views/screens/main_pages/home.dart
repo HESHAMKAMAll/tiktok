@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
             final data = videoController.videoList[index];
             return Stack(
               children: [
-                VideoPlayerItem(videoUrl: data.videoUrl),
+                // VideoPlayerItem(videoUrl: data.videoUrl),
                 Column(
                   children: [
                     Expanded(
@@ -114,12 +114,14 @@ class _HomeState extends State<Home> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(data.username, style: const TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+                                  Text(data.username,
+                                      style: const TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
                                   Text(data.caption, style: const TextStyle(fontSize: 15, color: Colors.white)),
                                   Row(
                                     children: [
                                       const Icon(Icons.music_note, color: Colors.white, size: 15),
-                                      Text(data.songName, style: const TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold)),
+                                      Text(data.songName,
+                                          style: const TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold)),
                                     ],
                                   ),
                                 ],
@@ -128,7 +130,7 @@ class _HomeState extends State<Home> {
                           ),
                           Container(
                             width: 100,
-                            margin: EdgeInsets.only(top: size.height / 4),
+                            margin: EdgeInsets.only(top: size.height / 2.4),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -161,9 +163,28 @@ class _HomeState extends State<Home> {
                                 Column(
                                   children: [
                                     CupertinoButton(
-                                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Comments(id: data.id))),
+                                      onPressed: () => showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        builder: (context) {
+                                          return Container(
+                                            height: MediaQuery.of(context).size.height-150, // Adjust the value as needed
+                                            child: Comments(id: data.id,commentCount: data.commentCount.toString()), // Your content goes here
+                                          );
+                                        },
+                                      ),
                                       child: const Icon(Icons.comment, size: 35, color: Colors.white),
                                     ),
+                                    // CupertinoButton(
+                                    //   onPressed: () => Navigator.push(
+                                    //       context,
+                                    //       ModalBottomSheetRoute(
+                                    //         builder: (context) => Comments(id: data.id),
+                                    //         isScrollControlled: false,
+                                    //
+                                    //       )),
+                                    //   child: const Icon(Icons.comment, size: 35, color: Colors.white),
+                                    // ),
                                     Text(
                                       data.commentCount.toString(),
                                       style: const TextStyle(fontSize: 16, color: Colors.white),
