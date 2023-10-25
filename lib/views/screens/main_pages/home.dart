@@ -7,6 +7,7 @@ import 'package:tiktok/controllers/video_contoller.dart';
 import 'package:tiktok/views/screens/main_pages/comments.dart';
 import '../../widgets/circle_animation.dart';
 import '../../widgets/video_player_item.dart';
+import '../side_pages/side_profile.dart';
 
 int _currentPageIndex = 0;
 
@@ -23,30 +24,33 @@ class _HomeState extends State<Home> {
   final VideoController videoController = Get.put(VideoController());
 
   buildProfile(String profilePhoto) {
-    return SizedBox(
-      width: 60,
-      height: 60,
-      child: Stack(
-        children: [
-          Positioned(
-            left: 5,
-            child: Container(
-              width: 50,
-              height: 50,
-              padding: const EdgeInsets.all(1),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(25)),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(25),
-                child: Image(
-                  image: NetworkImage(
-                    profilePhoto,
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SideProfile(data: videoController.videoList,))),
+      child: SizedBox(
+        width: 60,
+        height: 60,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 5,
+              child: Container(
+                width: 50,
+                height: 50,
+                padding: const EdgeInsets.all(1),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(25)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Image(
+                    image: NetworkImage(
+                      profilePhoto,
+                    ),
+                    fit: BoxFit.cover,
                   ),
-                  fit: BoxFit.cover,
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -84,6 +88,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Obx(() {
         return PageView.builder(
           onPageChanged: (index) {
@@ -134,7 +139,40 @@ class _HomeState extends State<Home> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                buildProfile(data.profilePhoto),
+                                GestureDetector(
+                                  // onTap: () {
+                                  //   print(data.uid);
+                                  //   print('++++++++++++++++++++++++++++++++');
+                                  // },
+                                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SideProfile(data: data))),
+                                  child: SizedBox(
+                                    width: 60,
+                                    height: 60,
+                                    child: Stack(
+                                      children: [
+                                        Positioned(
+                                          left: 5,
+                                          child: Container(
+                                            width: 50,
+                                            height: 50,
+                                            padding: const EdgeInsets.all(1),
+                                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(25)),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(25),
+                                              child: Image(
+                                                image: NetworkImage(
+                                                  data.profilePhoto,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // buildProfile(data.profilePhoto),
                                 Column(
                                   children: [
                                     CupertinoButton(
@@ -175,16 +213,6 @@ class _HomeState extends State<Home> {
                                       ),
                                       child: const Icon(Icons.comment, size: 35, color: Colors.white),
                                     ),
-                                    // CupertinoButton(
-                                    //   onPressed: () => Navigator.push(
-                                    //       context,
-                                    //       ModalBottomSheetRoute(
-                                    //         builder: (context) => Comments(id: data.id),
-                                    //         isScrollControlled: false,
-                                    //
-                                    //       )),
-                                    //   child: const Icon(Icons.comment, size: 35, color: Colors.white),
-                                    // ),
                                     Text(
                                       data.commentCount.toString(),
                                       style: const TextStyle(fontSize: 16, color: Colors.white),
@@ -194,7 +222,9 @@ class _HomeState extends State<Home> {
                                 Column(
                                   children: [
                                     CupertinoButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => Comments(id: data.id,commentCount: data.commentCount.toString())));
+                                      },
                                       child: const Icon(Icons.reply, size: 35, color: Colors.white),
                                     ),
                                     Text(

@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:tiktok/views/screens/side_pages/videos.dart';
 import '../../../constants.dart';
 import '../../../controllers/profile_controller.dart';
 
 class Profile extends StatelessWidget {
   final data;
-
   const Profile({super.key, this.data});
 
   @override
@@ -184,10 +184,17 @@ class Profile extends StatelessWidget {
                                   ),
                                   itemBuilder: (context, index) {
                                     DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
-                                    return SizedBox(
-                                      child: Image(
-                                        image: NetworkImage(snap['thumbnail']),
-                                        fit: BoxFit.cover,
+                                    return GestureDetector(
+                                      // onTap: (){
+                                      //   print(index);
+                                      //   print("========================");
+                                      // },
+                                      onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context) => Videos(uid: snap,selected: index))),
+                                      child: SizedBox(
+                                        child: Image(
+                                          image: NetworkImage(snap['thumbnail']),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     );
                                   },

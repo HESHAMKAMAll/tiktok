@@ -6,14 +6,21 @@ import 'package:tiktok/constants.dart';
 import 'package:timeago/timeago.dart' as tago;
 import '../../../controllers/comment_controller.dart';
 
-class Comments extends StatelessWidget {
+class Comments extends StatefulWidget {
   final String id;
   final String commentCount;
   Comments({super.key, required this.id, required this.commentCount});
+
+  @override
+  State<Comments> createState() => _CommentsState();
+}
+
+class _CommentsState extends State<Comments> with AutomaticKeepAliveClientMixin<Comments>  {
   final TextEditingController _commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final size = MediaQuery.of(context).size;
     return Consumer<CommentController>(
       builder: (context, value, child) => Scaffold(
@@ -21,12 +28,12 @@ class Comments extends StatelessWidget {
         body: Column(
           children: [
             SizedBox(height: 14),
-            Text("Comments  $commentCount",style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Comments  ${widget.commentCount}",style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 5),
             Divider(),
             Expanded(
               child: StreamBuilder(
-                stream: firestore.collection("videos").doc(id).collection("comments").snapshots(),
+                stream: firestore.collection("videos").doc(widget.id).collection("comments").snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator(color: Colors.red));
@@ -93,7 +100,7 @@ class Comments extends StatelessWidget {
                                       right: 0,
                                       child: CupertinoButton(
                                         onPressed: () {
-                                          value.likeComment(snapshot.data!.docs[i]["id"], id);
+                                          value.likeComment(snapshot.data!.docs[i]["id"], widget.id);
                                         },
                                         padding: EdgeInsets.zero,
                                         child: Icon(
@@ -148,12 +155,13 @@ class Comments extends StatelessWidget {
               ),
               title: TextFormField(
                 controller: _commentController,
+                onTapOutside: (event) => FocusManager.instance.primaryFocus!.unfocus(),
                 style: const TextStyle(fontSize: 16, color: Colors.white),
                 decoration: InputDecoration(
                   suffixIcon: CupertinoButton(
                     onPressed: () async {
                       if (_commentController.text.isNotEmpty) {
-                        await value.postComment(_commentController.text, id);
+                        await value.postComment(_commentController.text, widget.id);
                         _commentController.clear();
                         FocusManager.instance.primaryFocus!.unfocus();
                       }
@@ -174,4 +182,6 @@ class Comments extends StatelessWidget {
       ),
     );
   }
+  @override
+  bool get wantKeepAlive => true;
 }

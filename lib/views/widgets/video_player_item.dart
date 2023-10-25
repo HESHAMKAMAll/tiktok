@@ -36,27 +36,26 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        hideIconPlay = true;
         if (videoPlayerController.value.isPlaying) {
           videoPlayerController.pause();
+          hideIconPlay = true;
         } else {
+          hideIconPlay = false;
           videoPlayerController.play();
         }
         setState(() {});
-        Future.delayed(const Duration(seconds: 1),() {
-          setState(() {
-            hideIconPlay = false;
-          });
-        },);
       },
-      child: Center(
-        child: AspectRatio(
-          aspectRatio: videoPlayerController.value.aspectRatio,
-          // width: size.width,
-          // height: size.height,
-          // decoration: const BoxDecoration(color: Colors.black),
-          child: VideoPlayer(videoPlayerController),
-        ),
+      child: Stack(
+        children: [
+          Center(
+            child: AspectRatio(
+              aspectRatio: videoPlayerController.value.aspectRatio,
+              child: VideoPlayer(videoPlayerController),
+            ),
+          ),
+          if(hideIconPlay)
+          Center(child: Icon(Icons.play_circle,size: 50))
+        ],
       ),
     );
   }

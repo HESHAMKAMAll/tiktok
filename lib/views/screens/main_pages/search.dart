@@ -70,8 +70,7 @@ class _SearchState extends State<Search> {
       ),
       body: searchController.text.isNotEmpty
           ? StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection('users').where('name', isGreaterThanOrEqualTo: searchController.text).snapshots(),
+              stream: FirebaseFirestore.instance.collection('users').where('name', isGreaterThanOrEqualTo: searchController.text).snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator(color: buttonColor));
